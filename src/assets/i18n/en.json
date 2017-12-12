@@ -8,9 +8,9 @@
   "LOGIN": "Sign in",
   "SIGNUP": "Sign up",
 
-  "TAB1_TITLE": "Items",
-  "TAB2_TITLE": "Search",
-  "TAB3_TITLE": "Settings",
+  "TAB1_TITLE": "Expense",
+  "TAB2_TITLE": "Income",
+  "TAB3_TITLE": "Search",
 
   "MAP_TITLE": "Map",
 
@@ -64,5 +64,5 @@
   "CARDS_TITLE": "Social",
 
   "SEARCH_TITLE": "Search",
-  "SEARCH_PLACEHOLDER": "Search the items list, e.g. \"Donald Duck\""
+  "SEARCH_PLACEHOLDER": "Search the income and expense" 
 }

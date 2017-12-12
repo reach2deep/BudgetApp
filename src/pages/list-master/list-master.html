@@ -15,21 +15,22 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let item of currentItems">
-      <button ion-item (click)="openItem(item)">
+    <ion-item *ngFor="let item of currentItems">
+      <div  class="mdc-list mdc-list--two-line mdc-list--avatar-list" (click)="openItem(item)">
         <ion-avatar item-start>
           <img [src]="item.profilePic" />
         </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
-      </button>
+        <h2>{{item.category}} - {{item.amount}}</h2>
+        <p>{{item.payee}}</p>
+        <ion-note item-end *ngIf="item.notes">{{item.notes}}</ion-note>
+      <!-- </button> -->
+      </div>
 
-      <ion-item-options>
+      <!-- <ion-item-options>
         <button ion-button color="danger" (click)="deleteItem(item)">
-          {{ 'DELETE_BUTTON' | translate }}
+         {{'DELETE_BUTTON' | translate }}
         </button>
-      </ion-item-options>
-    </ion-item-sliding>
+      </ion-item-options> -->
+    </ion-item>
   </ion-list>
 </ion-content>

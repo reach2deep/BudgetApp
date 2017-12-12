@@ -1,8 +1,10 @@
+import { ExpenseService } from './../../providers/ExpenseService';
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, ToastController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items } from '../../providers/providers';
+
 
 @IonicPage()
 @Component({
@@ -10,10 +12,15 @@ import { Items } from '../../providers/providers';
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  currentItems: Item[];
+  currentItems: any;
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
-    this.currentItems = this.items.query();
+  constructor(public navCtrl: NavController, 
+    public expenseService: ExpenseService, 
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController,) {
+    this.currentItems = this.loadItems() ;//this.expenseService.getItemsList();
+    
+    console.log('RES' , JSON.stringify(this.currentItems ));
   }
 
   /**
@@ -30,7 +37,7 @@ export class ListMasterPage {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
       if (item) {
-        this.items.add(item);
+        this.expenseService.add(item);
       }
     })
     addModal.present();
@@ -40,7 +47,7 @@ export class ListMasterPage {
    * Delete an item from the list of items.
    */
   deleteItem(item) {
-    this.items.delete(item);
+    this.expenseService.delete(item);
   }
 
   /**
@@ -51,4 +58,23 @@ export class ListMasterPage {
       item: item
     });
   }
+
+    // Attempt to login in through our User service
+    loadItems() {
+      
+          
+      this.expenseService.getItemsList().subscribe((resp) => {
+            console.log(JSON.stringify(resp));
+            this.currentItems = resp;
+          }, (err) => {
+            //this.navCtrl.push(MainPage);
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+              message: err,
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          });
+        }
 }

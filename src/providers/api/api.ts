@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /**
@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class Api {
-  url: string = 'https://example.com/api/v1';
+  url: string = 'http://192.168.1.74:3000/api';
 
   constructor(public http: HttpClient) {
   }
@@ -30,7 +30,9 @@ export class Api {
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.post(this.url + '/' + endpoint, body, reqOpts);
+    return this.http.post(this.url + '/' + endpoint, body, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'),
+    });
   }
 
   put(endpoint: string, body: any, reqOpts?: any) {

@@ -1,7 +1,13 @@
+import { CategoryListPage } from './../pages/categorylist-page/categorylist-page';
+import { CategoryService } from './../providers/CategoryService';
+import { ExpenseService } from './../providers/ExpenseService';
+import { TransactionData } from './../providers/transaction-data';
+import { Transaction } from './../models/transaction.model';
+import { AuthService } from './../providers/auth-service';
+
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Camera } from '@ionic-native/camera';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule, Storage } from '@ionic/storage';
@@ -14,6 +20,13 @@ import { Settings } from '../providers/providers';
 import { User } from '../providers/providers';
 import { Api } from '../providers/providers';
 import { MyApp } from './app.component';
+
+import { File } from "@ionic-native/file";
+import { Transfer } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera } from '@ionic-native/camera';
+import { TreeviewModule } from 'ngx-treeview/src';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -38,11 +51,14 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    NgbModule.forRoot(),
+    TreeviewModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -51,7 +67,7 @@ export function provideSettings(storage: Storage) {
       }
     }),
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot()    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -59,11 +75,17 @@ export function provideSettings(storage: Storage) {
   ],
   providers: [
     Api,
-    Items,
+    AuthService,
+    ExpenseService,
+    CategoryService,
     User,
+    [File],
+    Transfer,
     Camera,
+    FilePath,
     SplashScreen,
     StatusBar,
+    TransactionData,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }

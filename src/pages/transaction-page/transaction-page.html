@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{ title }}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()">Save</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-divider>
+      Transaction Details
+    </ion-item-divider>
+  </ion-list>
+  <div [ngClass]="{'cssSlideUp': showValidationMessage, 'ng-hide': !showValidationMessage}">
+    <span style="line-height:40px;">{{ validationMessage }}</span>
+  </div>
+
+  <form  (ngSubmit)="save()">
+
+    <ion-item>
+      <ion-label fixed>Date</ion-label>
+      <ion-datetime name="date" displayFormat="DD MMM YYYY" [(ngModel)]="transaction.transactionDate"></ion-datetime>
+      <ion-datetime name="time" displayFormat="hh:mm A" [(ngModel)]="transaction.transactionDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Category</ion-label>
+      <ion-input name="category" type="text" (click)="pickCategory()" [(ngModel)]="transaction.category">  </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Amount</ion-label>
+      <ion-input name="amount" type="number" [(ngModel)]="transaction.amount"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Payee</ion-label>
+      <ion-input name="payee" type="text"  [(ngModel)]="transaction.payee"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Account</ion-label>
+      <ion-input  name="account" type="text"  [(ngModel)]="transaction.account"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Notes</ion-label>
+      <ion-input name="notes" type="text" [(ngModel)]="transaction.notes"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button icon-only type="button" (click)="addMedia()"> 
+        <ion-icon name="camera"  ></ion-icon>
+      </button>
+    </ion-item>
+    <br><br>
+    <ion-item>
+      <ion-col col-6 *ngFor="let photo of transaction.photos; let id = index">
+        <ion-card class="block">
+          <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto(id)"></ion-icon>
+          <img [src]="photo" *ngIf="photo" />
+        </ion-card>
+      </ion-col>
+    </ion-item>
+    <!-- <ion-scroll direction="x" style="height:200px; min-height: 200px; overflow: scroll; white-space: nowrap;">
+      <img ng-repeat="base64Image in transaction.photo" [src]="base64Image" style="height:200px; padding: 5px 5px 5px 5px;"/>
+    </ion-scroll> -->
+    <button padding type="submit"  ion-button full >Submit</button>
+  </form>
+</ion-content>
