@@ -1,3 +1,4 @@
+import { PayeeService } from './../providers/PayeeService';
 import { CategoryListPage } from './../pages/categorylist-page/categorylist-page';
 import { CategoryService } from './../providers/CategoryService';
 import { ExpenseService } from './../providers/ExpenseService';
@@ -78,6 +79,7 @@ export function provideSettings(storage: Storage) {
     AuthService,
     ExpenseService,
     CategoryService,
+    PayeeService,
     User,
     [File],
     Transfer,

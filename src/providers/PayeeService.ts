@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class CategoryService {
+export class PayeeService {
 
   constructor(public api: Api) { }
 
@@ -23,8 +23,8 @@ export class CategoryService {
   /**
    * Send a GET request to get data
    */
-  getCategoryList(params?: any) : Observable<any>{    
-    let seq = this.api.get('category',params).share();
+  getPayeeList(params?: any) : Observable<any>{    
+    let seq = this.api.get('payee',params).share();
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
@@ -44,14 +44,14 @@ export class CategoryService {
     return seq;
   }
 
-  getProducts(params?: any) : Observable<any> {
-    console.log('in getProducts');
-    // ...using get request
-    let response = this.api.get('category')
-       // ...and calling .json() on the response to return data
-       .map(response => response);
-   return response;
-}
+//   getProducts(params?: any) : Observable<any> {
+//     console.log('in getProducts');
+//     // ...using get request
+//     let response = this.api.get('category')
+//        // ...and calling .json() on the response to return data
+//        .map(response => response);
+//    return response;
+// }
 // getFilteredTransactions(params?: any): Observable<any> {
 //   //return this.api.get('/houses/' ,params).map(response: Response) as Observable<any[]>;
 // }

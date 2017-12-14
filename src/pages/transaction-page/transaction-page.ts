@@ -116,61 +116,18 @@ export class TransactionPage {
         case 'TransactionsPage': {
           break;
         }
-        // case 'PickTransactionTypePage': {
-        //   // Transaction Type
-        //   this.transaction.typedisplay = this.transactionData.getTransactionType();
-        //   this.transaction.istransfer = (this.transaction.typedisplay === "Transfer") ? true : false;
-        //   this.hasDataTransactionType = (this.transaction.typedisplay !== "") ? true : false;
-        //   break;
-        // }
-        // case 'PickAccountFromPage': {
-        //   // Account to transfer from
-        //   this.transaction.accountFrom = this.transactionData.getAccountFrom();
-        //   this.transaction.accountFromId = this.transactionData.getAccountFromId();
-        //   this.hasDataAccountFrom = (this.transaction.accountFrom !== "") ? true : false;
-        //   break;
-        // }
-        // case 'PickAccountToPage': {
-        //   // Account to transfer to
-        //   this.transaction.accountTo = this.transactionData.getAccountTo();
-        //   this.transaction.accountToId = this.transactionData.getAccountToId();
-        //   this.hasDataAccountTo = (this.transaction.accountTo !== "") ? true : false;
-        //   break;
-        // }
-        // case 'PickPayeePage': {
-        //   // Payee
-        //   this.transaction.payee = this.transactionData.getPayeeName();
-        //   this.transaction.payeeid = this.transactionData.getPayeeID();
-        //   this.hasDataPayee = (this.transaction.payee !== "") ? true : false;
-        //   break;
-        // }
-        // case 'PickCategoryPage': {
-        //   // Payee
-        //   this.transaction.category = this.transactionData.getCategoryName();
-        //   this.transaction.categoryid = this.transactionData.getCategoryID();
-        //   this.hasDataCategory = (this.transaction.category !== "") ? true : false;
-        //   break;
-        // }
-        // case 'PickAmountPage': {
-        //   // Payee
-        //   this.transaction.amount = this.transactionData.getAmount();
-        //   this.hasDataAmount = (this.transaction.amount !== "") ? true : false;
-        //   break;
-        // }
-        // case 'PickNotesPage': {
-        //   // Payee
-        //   this.transaction.notes = this.transactionData.getNotes();
-        //   if (this.transaction.notes !== '') {
-        //     this.hasDataNotes = true;
-        //   }
-        //   break;
-        // }
-        // case 'PickPhotoPage': {
-        //   // Payee
-        //   this.transaction.notes = this.transactionData.getPhoto();
-        //   this.hasDataPhoto = (this.transaction.photo !== "") ? true : false;
-        //   break;
-        // }
+        case 'PickCategoryPage': {
+          // Payee
+          this.transaction.category = this.transactionData.getCategory();
+          this.transaction.categoryid = this.transactionData.getCategoryId();          
+          break;
+        }
+        case 'PickPayeePage': {
+          // Payee
+          this.transaction.payee = this.transactionData.getPayee();
+          this.transaction.payeeid = this.transactionData.getPayeeId();          
+          break;
+        }
       }
     }
 
@@ -227,6 +184,7 @@ export class TransactionPage {
       }, (err) => {
         this.presentToast('Error while selecting image.');
       });
+    
     }
 
     // Create a new name for the image
@@ -241,6 +199,7 @@ private createFileName() {
 private copyFileToLocalDir(namePath, currentName, newFileName) {
   this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
     this.lastImage = newFileName;
+    //this.transaction.photos.push(this.file.readAsDataURL(this.lastImage));
   }, error => {
     this.presentToast('Error while storing file.');
      console.log(JSON.stringify(error));
@@ -269,18 +228,24 @@ public pickCategory() {
   
   this.auth.LoadingControllerShow();
   console.log(JSON.stringify(this.transaction));
-  this.nav.push(CategoryListPage, {
-    callback: this.myCallbackFunction,
-});
+  this.nav.push('CategoryListPage');
 }
 
-public myCallbackFunction = (_params) => {
-  console.log('myCallbackFunction');
-  return new Promise((resolve, reject) => {
-     JSON.stringify(this.transactionData);
-      resolve();
-  });
- }
+public pickPayee() {  
+  this.auth.LoadingControllerShow();
+  console.log(JSON.stringify(this.transaction));
+  this.nav.push('PayeeListPage');
+}
+
+
+
+// public myCallbackFunction = (_params) => {
+//   console.log('myCallbackFunction');
+//   return new Promise((resolve, reject) => {
+//      JSON.stringify(this.transactionData);
+//       resolve();
+//   });
+//  }
 
 
     //   console.log('addMedia');

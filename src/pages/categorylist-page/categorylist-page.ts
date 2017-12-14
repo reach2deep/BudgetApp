@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 import { CategoryService } from '../../providers/CategoryService';
 
-
+@IonicPage()
 @Component({
   moduleId: 'module.id',
   selector: 'categorylist-page',
