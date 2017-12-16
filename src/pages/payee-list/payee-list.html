@@ -1,19 +1,38 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Select Payee
-    </ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Payees</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="savePayee()">Save</button>
+      <button ion-button (click)="addItem()">
+        <ion-icon name="md-add"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
-    <button ion-item *ngFor="let payee of payeeList" ion-item (click)="selectPayee(payee)">
-      <ion-icon item-left name="ios-contact-outline"></ion-icon>
-      {{ payee.payeename }}
-    </button>
+    <ion-item-group *ngFor="let group of groupedPayees">
+      <ion-item-divider sticky>
+        <ion-label>
+          {{group.letter}}
+        </ion-label>
+      </ion-item-divider>      
+      <ion-item-sliding *ngFor="let payee of group.payees" #slidingItem>
+        <button ion-item (click)="viewItemDetails(payee)">
+          <ion-icon item-left name="ios-contact-outline"></ion-icon>
+          {{ payee.payeename }}
+        </button>
+        <ion-item-options>
+          <button ion-button color="energized" (click)="editItem(slidingItem, payee)" padding-horizontal>
+            Edit
+          </button>
+          <button ion-button color="danger" (click)="deleteItem(slidingItem, payee)">
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
   </ion-list>
 </ion-content>

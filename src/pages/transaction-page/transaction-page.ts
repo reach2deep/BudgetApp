@@ -17,7 +17,7 @@ import { File } from "@ionic-native/file";
 import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
-import { CategoryListPage } from '../categorylist-page/categorylist-page';
+import { PickCategoryListPage } from '../pick-categorylist-page/pick-categorylist-page';
 import { Response } from '@angular/http/src/static_response';
 
 declare var cordova: any;
@@ -236,13 +236,13 @@ public pickCategory() {
   
   this.auth.LoadingControllerShow();
   console.log(JSON.stringify(this.transaction));
-  this.nav.push('CategoryListPage');
+  this.nav.push('PickCategoryListPage');
 }
 
 public pickPayee() {  
   this.auth.LoadingControllerShow();
   console.log(JSON.stringify(this.transaction));
-  this.nav.push('PayeeListPage');
+  this.nav.push('PickPayeeListPage');
 }
 
 

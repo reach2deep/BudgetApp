@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{ title }}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()">Save</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item-divider>
+      {{ listheader }}
+    </ion-item-divider>
+    <div [ngClass]="{'cssSlideUp': showValidationMessage, 'ng-hide': !showValidationMessage}">
+      <span style="line-height:40px;">{{ validationMessage }}</span>
+    </div>
+    <ion-item class="ml-input">
+      <i class="fa fa-clipboard" item-left></i>
+      <ion-label floating>Category Name</ion-label>
+      <ion-input type="text" [(ngModel)]="category.categoryname"></ion-input>
+    </ion-item>
+    <button ion-item class="ml-input" (click)="pickCategoryType()">
+      <i class="fa fa-thumb-tack" item-left></i>
+      <ion-label floating>Category Type</ion-label>
+      <ion-input type="text" [(ngModel)]="category.categorytype" disabled></ion-input>
+    </button>
+    <button ion-item class="ml-input" (click)="pickCategoryParent()">
+      <i class="fa fa-link" item-left></i>
+      <ion-label floating>Parent Category</ion-label>
+      <ion-input type="text" [(ngModel)]="category.categoryparent" disabled></ion-input>
+    </button>
+  </ion-list>
+</ion-content>

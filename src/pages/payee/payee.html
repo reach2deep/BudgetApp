@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{ title }}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()">Save</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item-divider>
+      {{ listheader }}
+    </ion-item-divider>
+    <div [ngClass]="{'cssSlideUp': showValidationMessage, 'ng-hide': !showValidationMessage}">
+      <span style="line-height:40px;">{{ validationMessage }}</span>
+    </div>
+    <ion-item class="ml-input">
+      <i class="fa fa-clipboard" item-left></i>
+      <ion-label floating>Payee Name</ion-label>
+      <ion-input type="text" [(ngModel)]="payee.payeename"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,7 +1,7 @@
 import { NativeStorage } from '@ionic-native/native-storage';
 import { TransactionService } from './../providers/TransactionService';
 import { PayeeService } from './../providers/PayeeService';
-import { CategoryListPage } from './../pages/categorylist-page/categorylist-page';
+
 import { CategoryService } from './../providers/CategoryService';
 import { TransactionData } from './../providers/transaction-data';
 import { Transaction } from './../models/transaction.model';

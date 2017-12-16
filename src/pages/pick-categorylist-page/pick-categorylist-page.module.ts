@@ -6,23 +6,23 @@ import { TreeviewModule } from 'ngx-treeview/src';
 
 
 // This Module's Components
-import { CategoryListPage } from './categorylist-page';
+import { PickCategoryListPage } from './pick-categorylist-page';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
-        IonicPageModule.forChild(CategoryListPage),
+        IonicPageModule.forChild(PickCategoryListPage),
         TranslateModule.forChild(),
         TreeviewModule.forRoot(),
         NgbModule.forRoot()
     ],
     declarations: [
-        CategoryListPage,
+        PickCategoryListPage,
     ],
     exports: [
-        CategoryListPage,
+        PickCategoryListPage,
     ]
 })
-export class CategoryListPageModule {
+export class PickCategoryListPageModule {
 
 }

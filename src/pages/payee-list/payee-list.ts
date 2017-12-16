@@ -1,107 +1,112 @@
-import { PayeeService } from './../../providers/PayeeService';
-import { TransactionData } from './../../providers/transaction-data';
-import { AuthService } from './../../providers/auth-service';
 import { Component } from '@angular/core';
 
-import { NavController , IonicPage} from 'ionic-angular';
-import { AuthManager } from '../../providers/AuthManager';
+import { NavController, AlertController } from 'ionic-angular';
 
+import { FirebaseListObservable } from 'angularfire2/database';
 
-@IonicPage()
+import { AuthService } from '../../../providers/auth-service';
+
+import { PayeePage } from '../payee/payee';
+
 @Component({
-  selector: 'payeelist-page',
+  selector: 'page-payee-list',
   templateUrl: 'payee-list.html'
 })
 
 export class PayeeListPage {
   
-  searchTerm: string = '';
-  transaction;
-  payeeList: any;
-  loadedPayeeList: any;
-   
+  payees: FirebaseListObservable<any>;
+  groupedPayees = [];
+
   constructor(
-      public nav: NavController,
-      public auth: AuthManager,
-      public payeeService: PayeeService,
-      public transactionData: TransactionData) {}
-
+      public navCtrl: NavController,
+      public alertController: AlertController,
+      public auth: AuthService) {}
+  
   ionViewDidLoad() {
-    this.payeeService.getPayeeList().subscribe(
-    (payees) => {
-      let arrpayees = [];
-      payees.forEach(function(spanshot, key){
-        //let payee = spanshot.val();
+
+    this.auth.getAllPayees().on('value', (payees) => { 
+
+      var that = this;
+      this.groupedPayees = [];
+      let currentPayees = [];
+      let currentLetter = '';
+
+      payees.forEach( spanshot => {
+
+        let payee = spanshot.val();
         let tempPayee = ({
-          $key: spanshot._id,
-          payeename: spanshot.name
+          $key: spanshot.key,
+          payeename: payee.payeename
         });
-        arrpayees.push(tempPayee);
-      });
-      this.payeeList = arrpayees;
-      this.loadedPayeeList = arrpayees;
-      if (this.transactionData.getPayee() != '') {
-        this.searchTerm = this.transactionData.getPayee();
-        this.doFilterList(this.searchTerm);
-      }
-      this.auth.LoadingControllerDismiss();
-    });
-  }
 
-  initializeItems(){
-    this.payeeList = this.loadedPayeeList;
-  }
-
-  getItems(searchbar) {
-    
-    // Reset items back to all of the items
-    this.initializeItems();
-
-    // set q to the value of the searchbar
-    var q = searchbar.srcElement.value;
-
-    // if the value is an empty string don't filter the items
-    if (!q) {
-      return;
-    }
-
-    this.doFilterList(q);
-  }
-
-  doFilterList (q) {
-    this.payeeList = this.payeeList.filter((v) => {
-      if(v.payeename && q) {
-        if (v.payeename.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-          return true;
+        let thisLetter = tempPayee.payeename.charAt(0);
+        thisLetter = thisLetter.toUpperCase();
+        if(thisLetter != currentLetter) {
+          currentLetter = tempPayee.payeename.charAt(0);
+          currentLetter = currentLetter.toUpperCase();
+          let newGroup = {
+            letter: currentLetter,
+            payees: []
+          };
+          currentPayees = newGroup.payees;
+          that.groupedPayees.push(newGroup);
         }
-        return false;
-      }
+        currentPayees.push(tempPayee);
+
+      })
+
+      // Disable loading controller when the promise is complete
+      this.auth.LoadingControllerDismiss();
+
     });
+  
   }
 
-  selectPayee(payee) {
-    this.transactionData.setReferrer('PickPayeePage');
-    this.transactionData.setPayee(payee.payeename);
-    this.transactionData.setPayeeId(payee.$key);
-    console.log(this.transactionData.payee);
-    console.log(this.transactionData.payeeid);
-
-    this.goBack();
+  viewItemDetails() {
+    console.log('Feature coming soon');
+  }
+  
+  addItem() {
+    this.navCtrl.push(PayeePage, { key: '0' });
   }
 
-  goBack() {
-    this.nav.pop();
+  editItem(slidingItem, item) {
+    this.handleSlidingItems(slidingItem);
+    this.navCtrl.push(PayeePage, { key: item.$key });
   }
 
-  savePayee() {
-    // var newPayee = {
-    //     'lastamount': '',
-    //     'lastcategory': '',
-    //     'lastcategoryid': '',
-    //     'payeename': this.searchTerm
-    // }
-    // this.auth.addPayee(newPayee);
-    //this.selectPayee(newPayee);
+  deleteItem(slidingItem, item) {
+    let alert = this.alertController.create({
+      title: 'Delete Payee',
+      message: 'Are you sure you want to delete ' + item.payeename + ' and ALL the transactions?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.handleSlidingItems(slidingItem);
+          }
+        },
+        {
+          text: 'Delete',
+          cssClass: 'alertDanger',
+          handler: () => {
+            this.handleSlidingItems(slidingItem);
+            this.auth.deletePayee(item);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
+  showTransactions() {
+    console.log('TO DO: show transactions view');
+  }
+
+  handleSlidingItems(slidingItem) {
+    // Close any open sliding items when the page updates
+    slidingItem.close();
+  }
+  
 }

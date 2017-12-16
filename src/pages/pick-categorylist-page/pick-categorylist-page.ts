@@ -9,11 +9,11 @@ import { CategoryService } from '../../providers/CategoryService';
 @IonicPage()
 @Component({
   moduleId: 'module.id',
-  selector: 'categorylist-page',
-  templateUrl: 'categorylist-page.html',
-  styleUrls: ['/categorylist-page.scss']
+  selector: 'pick-categorylist-page',
+  templateUrl: 'pick-categorylist-page.html',
+  styleUrls: ['/pick-categorylist-page.scss']
 })
-export class CategoryListPage {
+export class PickCategoryListPage {
 
 
 

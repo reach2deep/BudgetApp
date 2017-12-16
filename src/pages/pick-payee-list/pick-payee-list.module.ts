@@ -2,22 +2,22 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
-import { PayeeListPage } from './payee-list';
+import { PickPayeeListPage } from './pick-payee-list';
 
 
 
 @NgModule({
     imports: [
-        IonicPageModule.forChild(PayeeListPage),
+        IonicPageModule.forChild(PickPayeeListPage),
         TranslateModule.forChild()
     ],
     declarations: [
-        PayeeListPage,
+        PickPayeeListPage,
     ],
     exports: [
-        PayeeListPage,
+        PickPayeeListPage,
     ]
 })
-export class TransactionPageModule {
+export class PickPayeeListPageModule {
 
 }
