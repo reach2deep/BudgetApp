@@ -1,42 +1,56 @@
 <ion-header no-border>
     <ion-navbar>
-      <button ion-button menuToggle>
+        <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>
-        {{ title }}
-      </ion-title>
-      <ion-buttons end>
-        <button ion-button (click)="search()">
+        <ion-title>
+            {{ title }}
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="search()">
           <ion-icon name="md-search"></ion-icon>
         </button>
-      </ion-buttons>
+        </ion-buttons>
     </ion-navbar>
     <ion-toolbar color="mlitemdivider">
-      <ion-row class="balancesRow">
-        <ion-col class="colBorder">
-          <span>Current Balance</span><span><strong>1000</strong></span>
-        </ion-col>
-        <ion-col class="colBorder">
-          <span>Today's Balance</span><span><strong>356</strong></span>
-        </ion-col>
-        <ion-col>
-          <span>Cleared Balance</span><span><strong>896</strong></span>
-        </ion-col>
-      </ion-row>
+        <ion-row class="balancesRow">
+            <ion-col class="colBorder">
+                <span>Current Balance</span><span><strong>1000</strong></span>
+            </ion-col>
+            <ion-col class="colBorder">
+                <span>Today's Balance</span><span><strong>356</strong></span>
+            </ion-col>
+            <ion-col>
+                <span>Cleared Balance</span><span><strong>896</strong></span>
+            </ion-col>
+        </ion-row>
     </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list [virtualScroll]="trans | async" [approxItemHeight]="'100px'" [bufferRatio]="3" [headerFn]="myHeaderFn">
+</ion-header>
+<ion-content>
+
+    <!-- <ion-list [virtualScroll]="trans" approxItemHeight="100px">
+        <ion-item *virtualItem="let transaction">
+            <ion-avatar item-left>
+                <ion-img [src]="" width="48" height="48"></ion-img>
+            </ion-avatar>
+            <h2>{{transaction.amount}}</h2>
+        </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll (infinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+
+    <ion-list [virtualScroll]="trans" [approxItemHeight]="'100px'" [bufferRatio]="3" [headerFn]="myHeaderFn">
         <ion-item-divider sticky color="light" *virtualHeader="let header">
-          {{ header }}
+            {{ header }}
         </ion-item-divider>
         <ion-item-sliding #slidingItem *virtualItem="let transaction">
-          <ion-item class="ml-item {{ transaction.ClearedClass }}" [ngClass]="{'ml-no-border': transaction.ionitemclass == '1'}">
-            <ion-row class="ml-row">
-              <ion-col (click)="edit(transaction)">              
-                <div class="customTransDesc">
-                  <span>
+            <ion-item class="ml-item {{ transaction.ClearedClass }}" [ngClass]="{'ml-no-border': transaction.ionitemclass == '1'}">
+                <ion-row class="ml-row">
+                    <ion-col (click)="edit(transaction)">
+                        <div class="customTransDesc">
+                            <span>
                     {{ transaction.payee }}
                     <small>
                       <ul>
@@ -49,31 +63,40 @@
                       </ul>
                     </small>
                   </span>
-                </div>
-              </ion-col>
-              <ion-col class="ml-col-2" (click)="edit(transaction)">
-                <div class="customTransAmt  {{ transaction.type }}">
-                  {{ transaction.amount }}
-                </div>
-                <br>
-                <div class="customRunBal">
-                  {{ transaction.runningbal }}
-                </div>
-              </ion-col>
-              <ion-col class="ml-col-3">
-                <input class="toggleTransactionCleared" type="checkbox" [(ngModel)]="transaction.iscleared" (change)="clearTransaction(transaction)">
-              </ion-col>
-            </ion-row>
-          </ion-item>
-          <ion-item-options>
-            <button ion-button color="danger" (click)="delete(transaction, slidingItem)">
+                        </div>
+                    </ion-col>
+                    <ion-col class="ml-col-2" (click)="edit(transaction)">
+                        <div class="customTransAmt  {{ transaction.type }}">
+                            {{ transaction.amount }}
+                        </div>
+                        <br>
+                        <div class="customRunBal">
+                            {{ transaction.runningbal }}
+                        </div>
+                    </ion-col>
+                    <ion-col class="ml-col-3">
+                        <input class="toggleTransactionCleared" type="checkbox" [(ngModel)]="transaction.iscleared" (change)="clearTransaction(transaction)">
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+            <ion-item-options>
+                <button ion-button color="danger" (click)="delete(transaction, slidingItem)">
               <ion-icon name="trash"></ion-icon>
               Delete
             </button>
-          </ion-item-options>
+            </ion-item-options>
         </ion-item-sliding>
     </ion-list>
+
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
     <ion-fab center bottom (click)="newTransaction()">
-      <button ion-fab color="mldarkblue"><ion-icon name="md-add"></ion-icon></button>
+        <button ion-fab color="mldarkblue"><ion-icon name="md-add"></ion-icon></button>
     </ion-fab>
-  </ion-content>
+</ion-content>

@@ -4,6 +4,7 @@ import { AuthService } from './../../providers/auth-service';
 import { Component } from '@angular/core';
 
 import { NavController , IonicPage} from 'ionic-angular';
+import { AuthManager } from '../../providers/AuthManager';
 
 
 @IonicPage()
@@ -21,7 +22,7 @@ export class PayeeListPage {
    
   constructor(
       public nav: NavController,
-      public auth: AuthService,
+      public auth: AuthManager,
       public payeeService: PayeeService,
       public transactionData: TransactionData) {}
 

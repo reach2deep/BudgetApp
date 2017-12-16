@@ -1,12 +1,14 @@
-import { ExpenseService } from './../../providers/ExpenseService';
+import { TransactionData } from './../../providers/transaction-data';
 import { Transaction } from './../../models/transaction.model';
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, ToastController, ItemSliding } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, ToastController, ItemSliding, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { AuthService } from '../../providers/auth-service';
+import { TransactionService } from '../../providers/TransactionService';
+import { AuthManager } from '../../providers/AuthManager';
 
 
 @IonicPage()
@@ -30,126 +32,118 @@ export class TrsansactionsListPage {
   
     startTime;
     elapsedTime;
+    transactionType : string='';
+
+    private start:number=0;
 
     constructor(public navCtrl: NavController, 
-        public expenseService: ExpenseService, 
+        public transactionService: TransactionService, 
         public modalCtrl: ModalController,
         public toastCtrl: ToastController,
         public alertController: AlertController,
-        public auth: AuthService) {
+        public auth: AuthManager,
+        public navParams: NavParams,
+        public transactionData: TransactionData) {
      //   this.currentItems = this.loadItems() ;//this.expenseService.getItemsList();
         
-        console.log('RES' );//, JSON.stringify(this.currentItems ));
+        //, JSON.stringify(this.currentItems ));
+
+       
+        this.transactionType = this.navParams.data.pageReferrer;
+        this.title=this.transactionType;
+        console.log('****' , this.transactionType);
+
+        if(this.transactionType===undefined)
+        {
+          this.transactionType = 'Expense';
+          this.title=this.transactionType;
+          console.log('****' , this.transactionType);
+        }
       }
 
     
 
 
       ionViewDidLoad() {
-        this.trans = this.expenseService.getProducts();
-        console.log('TRANS:' + JSON.stringify(this.trans));
-        
-            //this.startTime = Date.now();
-            //this.equalToSubject = new BehaviorSubject(null);
-            //this.orderByChild = new BehaviorSubject('date');
-            //this.trans = this.auth.getFilteredTransactions(this.account, this.orderByChild, this.equalToSubject);
-            // this.trans.first().subscribe(snapshots => {
-            //   this.auth.syncAccountBalances(this.account);
-            //   this.auth.LoadingControllerDismiss();
-            //   this.elapsedTime = Date.now() - this.startTime;
-            //   //console.log(this.elapsedTime);
-            // });
+       
+        console.log('ionViewDidLoad #####');
+        console.log('TRANS:' + JSON.stringify(this.trans));        
+   
+        this.loadPageData();
+      }
+
+      loadPageData()
+      {
+        this.auth.LoadingControllerShow();
+        let referrer =this.transactionType;
+        switch (referrer) {
+          case '': {
+            break;
           }
+          case 'Expense': {            
+            this.loadExpenseList('Expense');      
+            break;
+          }
+          case 'Income': {            
+            this.trans = this.transactionService.getIncomeList();     
+            break;
+          }
+        }
+        this.auth.LoadingControllerDismiss();
+      }
         
           ionViewWillEnter() {
-            // let referrer = this.transactionData.getReferrer();
-            // switch (referrer) {
-            //   case 'TransactionPage': {
-            //     if (this.transactionData.ismodified) {
-            //       this.auth.syncAccountBalances(this.account);
-            //     }
-            //     break;
-            //   }
-            // }
-          }
+            console.log('ionViewWillEnter #####');
+            console.log(this.transactionData.getReferrer());
+            console.log(this.transactionData.ismodified);
+
+            //this.pageReferrer = this.transactionData.getReferrer();           
+                if (this.transactionData.ismodified) {
+                  console.log('ionViewWillEnter ##### loadPageData');
+                  this.loadPageData();
+                
+              }
+            }
+
+          
         
           search() {
             console.log('search here');
           }
         
           filterBy(size: string) {
-            //this.orderByChild.next('payeelower');
-            //this.equalToSubject.next('starbucks');
+            
           }
         
           newTransaction() {
-            // this.transactionData.setReferrer('TransactionsPage');
-            // this.transactionData.ismodified = false;
-           //  this.nav.push(TransactionPage, {paramTransaction: '', paramAccount: this.account, paramMode: 'New'});
+            
 
-           this.navCtrl.push('TransactionPage',  { paramTransactionType: 'Expense', paramMode: 'New'});
+           this.navCtrl.push('TransactionPage',  { paramTransactionType: this.transactionType, paramMode: 'New'});
           }
         
           edit(transaction) { 
-            // this.transactionData.setReferrer('TransactionsPage');
-            // this.nav.push(TransactionPage, { paramTransaction: transaction, paramAccount: this.account, paramMode: 'Edit' });
+          
           }
         
           delete(transaction, slidingItem: ItemSliding) {
-            // let alert = this.alertController.create({
-            //   title: 'Please Confirm',
-            //   message: 'Are you sure you want to delete this transaction?',
-            //   buttons: [
-            //     {
-            //       text: 'Cancel',
-            //       handler: () => {
-            //         slidingItem.close();
-            //       }
-            //     },
-            //     {
-            //       text: 'Delete',
-            //       cssClass: 'alertDanger',
-            //       handler: () => {
-            //         this.trans.remove(transaction.$key);
-            //         this.auth.syncAccountBalances(this.account);
-            //       }
-            //     }
-            //   ]
-            // });
-            // alert.present();
+          
           }
         
           clearTransaction(transaction) {
-            // this.trans.update(transaction.$key, { 'iscleared': transaction.iscleared });
-            // this.auth.syncAccountBalances(this.account);sa
           }
         
           myHeaderFn(transaction, recordIndex, transactions) {
-
-            console.log('transaction:' + JSON.stringify(transaction));
-            console.log('recordIndex:' + JSON.stringify(recordIndex));
-            console.log('transactions:' + JSON.stringify(transactions));
-
-            console.log('transaction.expenseDate:' + transaction.expenseDate);
-
-            console.log('transaction.expenseDate/1000 :' +(transaction.expenseDate - 1000));
         
+            console.log('myHeaderFn #####');
             let format = 'MMMM DD, YYYY (ddd)';    
-            //let dtdb = transaction.expenseDate - 1000;
-            //let thismoment = moment.unix(dtdb);
+            
             let thisTransDate = moment(transaction.expenseDate).format(format);
-
-            console.log('thisTransDate :' + thisTransDate);
         
             // Get previous transaction
             let prevTransaction = transactions[recordIndex - 1];
             if (prevTransaction === undefined) {
               return thisTransDate;
             }
-        
-            // Get date for previous transaction
-            // let dtprev = prevTransaction.date - 1000;
-            // let prevmoment = moment.unix(dtprev);
             let prevTransDate = moment(prevTransaction.expenseDate).format(format);//prevmoment.format(format);
         
             // Compare dates between this transaction and the previous transaction
@@ -157,7 +151,7 @@ export class TrsansactionsListPage {
               return null;
             } else {
               // If dates are different, add header and supress bottom border
-              //prevTransaction.ionitemclass = "1";
+              prevTransaction.ionitemclass = "1";
               return thisTransDate;
             }
         
@@ -173,10 +167,43 @@ export class TrsansactionsListPage {
           }
         
           doFilterList (q) {
-            console.log(q);
-            //this.orderByChild.next('payeelower');
-           // this.equalToSubject.next(q);
+            console.log(q);        
           }
+
+
+          itemCount;
+          doInfinite(infiniteScroll) {
+
+            console.log('doInfinite #####');
+            
+                    console.log('Begin async operation');
+                    
+                    console.log('doInfinite, start is currently '+this.start);
+                    this.start+=50;
+                    
+                    this.loadExpenseList(this.transactionType).then(()=>{
+                      infiniteScroll.complete();                     
+                    });
+            
+                    console.log('Async operation has ended');
+                    infiniteScroll.complete();
+              }
+
+              loadExpenseList(any) {
+                
+                return new Promise(resolve => {
+                  
+                  this.transactionService.getExpenseListPager(this.start,this.transactionType)
+                  .subscribe(data => {
+                    
+                   this.trans=data;                    
+                    resolve(true);
+                    
+                  });
+                        
+                });
+            
+              }
 
 
 }

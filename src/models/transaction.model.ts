@@ -5,8 +5,9 @@ export interface ITransaction {
     transactionType: string;
     category: string;
     categoryid: string;   
-    amount: number;
+    amount: string;
     account: string; 
+    accountId: string; 
     payee: string;
     payeeid: string;
     notes: string;   
@@ -29,8 +30,9 @@ export interface ITransaction {
     public transactionType: string = '';
     public category: string = '';
     public categoryid: string = '';
-    public amount: number;
+    public amount: string;
     public account: string = '';
+    public accountId: string = '';
     public payee: string = '';
     public payeeid: string = '';
     public notes: string = '';
@@ -52,8 +54,9 @@ export interface ITransaction {
       this.transactionType = (transaction.transactionType == undefined)? '' : transaction.transactionType;
       this.category = (transaction.category == undefined)? '' : transaction.category;
       this.categoryid = (transaction.categoryid == undefined)? '' : transaction.categoryid;
-      this.amount = transaction.amount;
+      this.amount =  (transaction.amount == undefined)? '' : transaction.amount;
       this.account = (transaction.account == undefined)? '' : transaction.account;
+      this.accountId = (transaction.accountId == undefined)? '' : transaction.accountId;
       this.payee = (transaction.payee == undefined)? '' : transaction.payee;
       this.payeeid = (transaction.payeeid == undefined)? '' : transaction.payeeid;
       this.notes = (transaction.notes == undefined)? '' : transaction.notes;
@@ -77,6 +80,7 @@ export interface ITransaction {
         'categoryid': this.categoryid,
         'amount': this.amount,
         'account':this.account,
+        'accountId':this.accountId,
         'payee': this.payee,
         'payeeid': this.payeeid,
         'notes': this.notes,   

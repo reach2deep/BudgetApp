@@ -41,4 +41,29 @@ export class AuthService {
     this.loading.dismiss();
   }
 
+  storageSetLanguage(lang) {
+    this.storageLang = lang;
+    this.storage.set('option0', lang);
+  }
+  storageSet(isenabled, pwd, email) {
+    this.storageTouchid = isenabled;
+    this.storagePwd = pwd;
+    this.storageEmail = email;
+    this.storage.set('ml1', isenabled);
+    this.storage.set('ml2', pwd);
+    this.storage.set('ml3', email);
+  }
+  storageSetEmail(email) {
+    this.storageEmail = email;
+    this.storage.set('ml3', email);
+  }
+  storageClean() {
+    this.storageTouchid = false;
+    this.storagePwd = '';
+    this.storageEmail = '';
+    this.storage.set('ml1', false);
+    this.storage.set('ml2', '');
+    this.storage.set('ml3', '');
+  }
+
 }

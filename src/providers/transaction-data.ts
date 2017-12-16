@@ -8,8 +8,9 @@ export class TransactionData {
   transactionType: string;
   category: string;
   categoryid: string;
-  amount:number;
+  amount:string;
   account: string;
+  accountId: string;
   payee: string;
   payeeid: string;
   notes: string;
@@ -74,10 +75,10 @@ export class TransactionData {
 
    // amount
   // ---------------------------------
-  setAmount(amount: number) {
+  setAmount(amount: string) {
     this.amount = amount;
   }
-  getAmount(): number {
+  getAmount(): string {
     return this.amount;
   }
 
@@ -89,6 +90,15 @@ export class TransactionData {
   }
   getAccount(): string {
     return this.account;
+  }
+
+  // accountId
+  // ---------------------------------
+  setAccountId(accountId: string) {
+    this.accountId = accountId;
+  }
+  getAccountId(): string {
+    return this.accountId;
   }
 
   // payee

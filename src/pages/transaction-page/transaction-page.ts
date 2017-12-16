@@ -1,3 +1,7 @@
+import { AuthManager } from './../../providers/AuthManager';
+
+import { HttpClient,HttpResponse } from '@angular/common/http';
+import { TransactionService } from './../../providers/TransactionService';
 import { User } from './../../providers/user/user';
 import { TransactionData } from './../../providers/transaction-data';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -14,6 +18,7 @@ import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { CategoryListPage } from '../categorylist-page/categorylist-page';
+import { Response } from '@angular/http/src/static_response';
 
 declare var cordova: any;
 
@@ -35,6 +40,7 @@ export class TransactionPage {
     transactionType;
     lastImage: string = null;
 
+    url: string = 'http://localhost:3000/api'; //'https://v-farm.herokuapp.com/api/';
 
     
 
@@ -42,7 +48,7 @@ export class TransactionPage {
         public nav: NavController,
         public modalController: ModalController,
         public navParams: NavParams,
-        public auth: AuthService,
+        public auth: AuthManager,
         public transactionData: TransactionData,
         public user: User,
         private camera: Camera,
@@ -51,7 +57,9 @@ export class TransactionPage {
         private file: File, 
         private filePath: FilePath,
         private platform: Platform,
-        public toastCtrl: ToastController) {    
+        public toastCtrl: ToastController,
+      public transactionService : TransactionService
+      ) {    
           
         
   
@@ -281,6 +289,13 @@ public pickPayee() {
       this.showValidationMessage = false;
       console.log('submitting form');
 
+      console.log('this.transaction.amount ' , this.transaction.amount);
+      // if (this.transaction.amount === undefined || this.transaction.amount === '') 
+      //   {
+      //     console.log('TRUES  ');
+      //   }
+      
+
    
       
   
@@ -288,6 +303,11 @@ public pickPayee() {
       if (this.transaction.transactionType === 'undefined' || this.transaction.transactionType === '') {
         this.showValidationMessage = true;
         this.validationMessage = "Please select Transaction Type"
+        return;
+      }
+      if (this.transaction.amount === undefined || this.transaction.amount === '') {
+        this.showValidationMessage = true;
+        this.validationMessage = "Please enter an amount for this transaction"
         return;
       }
       if (this.transaction.category === 'undefined' || this.transaction.category === '') {
@@ -300,11 +320,7 @@ public pickPayee() {
         this.validationMessage = "Please select a Payee"
         return;
       }
-      if (this.transaction.amount === 0) {
-        this.showValidationMessage = true;
-        this.validationMessage = "Please enter an amount for this transaction"
-        return;
-      }
+     
 
       console.log(JSON.stringify(this.transaction));
   
@@ -352,12 +368,26 @@ public pickPayee() {
     //     this.transaction.istransfer = false;
     //   }
   
-    //   if (this.mode === 'New') {
-    //     //
-    //     // Create New Transaction
-    //     //
-    //     this.auth.addTransaction(this.transaction, this.account);
-    //   } else {
+      if (this.mode === 'New') {
+        this.auth.LoadingControllerShow();
+        //
+        // Create New Transaction
+        //
+//this.transactionService.getExpenseList().
+
+        this.transactionService.add(this.transaction,this.transactionType).subscribe(response=>
+          {
+            console.log('In-Page' ,JSON.stringify(response));
+            if (response.status === 201) {
+              this.presentToast('Expense added succesfully');
+              this.transactionData.setReferrer(this.transactionType);
+              this.transactionData.ismodified = true;
+              this.auth.LoadingControllerDismiss();
+              this.nav.pop();
+            }
+          });
+      }
+      // else {
     //     //
     //     // Update Existing Transaction
     //     //

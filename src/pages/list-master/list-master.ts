@@ -1,4 +1,5 @@
-import { ExpenseService } from './../../providers/ExpenseService';
+import { TransactionService } from './../../providers/TransactionService';
+
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, ToastController } from 'ionic-angular';
 
@@ -15,7 +16,7 @@ export class ListMasterPage {
   currentItems: any;
 
   constructor(public navCtrl: NavController, 
-    public expenseService: ExpenseService, 
+    public expenseService: TransactionService, 
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,) {
     this.currentItems = this.loadItems() ;//this.expenseService.getItemsList();
@@ -37,7 +38,7 @@ export class ListMasterPage {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
       if (item) {
-        this.expenseService.add(item);
+        this.expenseService.add(item,'rer');
       }
     })
     addModal.present();

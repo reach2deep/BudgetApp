@@ -56,12 +56,12 @@
             <ion-label fixed>Notes</ion-label>
             <ion-input name="notes" type="text" [(ngModel)]="transaction.notes"></ion-input>
         </ion-item>
-        <ion-item>
+        <!-- <ion-item>
             <button ion-button icon-only type="button" (click)="addMedia()"> 
         <ion-icon name="camera"  ></ion-icon>
       </button>
-        </ion-item>
-        <br><br>
+        </ion-item> -->
+        <!-- <br><br>
         <ion-item>
             <ion-col col-6 *ngFor="let photo of transaction.photos; let id = index">
                 <ion-card class="block">
@@ -69,10 +69,10 @@
                     <img [src]="photo" *ngIf="photo" />
                 </ion-card>
             </ion-col>
-        </ion-item>
+        </ion-item> -->
         <!-- <ion-scroll direction="x" style="height:200px; min-height: 200px; overflow: scroll; white-space: nowrap;">
       <img ng-repeat="base64Image in transaction.photo" [src]="base64Image" style="height:200px; padding: 5px 5px 5px 5px;"/>
     </ion-scroll> -->
-        <button padding type="submit" ion-button full>Submit</button>
+        <!-- <button padding type="submit" ion-button full>Submit</button> -->
     </form>
 </ion-content>

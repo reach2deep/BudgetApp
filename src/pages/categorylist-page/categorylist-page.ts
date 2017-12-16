@@ -1,3 +1,4 @@
+import { AuthManager } from './../../providers/AuthManager';
 import { AuthService } from './../../providers/auth-service';
 import { TransactionData } from './../../providers/transaction-data';
 import { Component } from '@angular/core';
@@ -27,15 +28,17 @@ export class CategoryListPage {
 
   constructor(  public nav: NavController,
     public categoryService: CategoryService,
-    public auth: AuthService,
-    public transactionData: TransactionData) { }
+    public auth: AuthManager,
+    public transactionData: TransactionData) { 
+      //this.auth.LoadingControllerShow();
+    }
 
   ionViewDidLoad() {
 
   
     
     this.type = 'Expense';//this.transactionData.getTransactionType();
-
+    
     console.log(this.type);
     let result ;
     this.categoryService.getCategoryList(this.type).subscribe(
@@ -56,14 +59,15 @@ export class CategoryListPage {
         });
       });
       this.expenseCategories = rawList;
-
+      this.auth.LoadingControllerDismiss();
       console.log('CategoryListPage ' + JSON.stringify(this.expenseCategories ));
+      
      });
 
 
-   
+     //this.auth.LoadingControllerDismiss();
 
-    this.auth.LoadingControllerDismiss();
+    //this.auth.LoadingControllerDismiss();
   
 
   }
